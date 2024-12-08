@@ -37,7 +37,7 @@ export function LoginForm() {
   const loginMutation = useMutation({
     mutationFn: AuthController.login,
     onSuccess: () => {
-      navigate({to: "/app"});
+      navigate({ to: "/box/$mailbox", params: { mailbox: "INBOX" } });
     },
   })
 

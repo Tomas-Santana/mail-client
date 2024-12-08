@@ -78,7 +78,7 @@ export async function superFetchMultipart<
     routeParams = [] as ApiRouteParams<Route>;
   }
 
-  const headers = await getHeaders(options.includeCredentials ?? false, true, "POST");
+  const headers = await getHeaders(options.includeCredentials ?? false, true);
 
   // @ts-ignore
   let realRoute = createRouteWithParams<Route, QueryParams>(

@@ -56,12 +56,11 @@ export function createRouteWithParams<
   return realRoute;
 }
 
-export async function getHeaders(includeCredentials: boolean, multipart: boolean = false) {
+export async function getHeaders(includeCredentials: boolean, multipart: boolean = false, method: string = "GET") {
   const headers = new Headers();
   if (multipart) {
     headers.set("Content-Type", "multipart/form-data");
-  } else {
-
+  } else if (method === "POST" || method === "PUT") {
     headers.set("Content-Type", "application/json");
   }
 

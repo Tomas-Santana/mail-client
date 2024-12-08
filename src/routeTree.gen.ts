@@ -14,9 +14,9 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
-import { Route as AppIndexImport } from './routes/app/index'
 import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AppBoxMailboxImport } from './routes/_app/box/$mailbox'
 
 // Create Virtual Routes
 
@@ -36,12 +36,6 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppIndexRoute = AppIndexImport.update({
-  id: '/app/',
-  path: '/app/',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const AuthRegisterRoute = AuthRegisterImport.update({
   id: '/auth/register',
   path: '/auth/register',
@@ -51,6 +45,12 @@ const AuthRegisterRoute = AuthRegisterImport.update({
 const AuthLoginRoute = AuthLoginImport.update({
   id: '/auth/login',
   path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AppBoxMailboxRoute = AppBoxMailboxImport.update({
+  id: '/_app/box/$mailbox',
+  path: '/box/$mailbox',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -86,11 +86,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterImport
       parentRoute: typeof rootRoute
     }
-    '/app/': {
-      id: '/app/'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppIndexImport
+    '/_app/box/$mailbox': {
+      id: '/_app/box/$mailbox'
+      path: '/box/$mailbox'
+      fullPath: '/box/$mailbox'
+      preLoaderRoute: typeof AppBoxMailboxImport
       parentRoute: typeof rootRoute
     }
   }
@@ -103,7 +103,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutLazyRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
-  '/app': typeof AppIndexRoute
+  '/box/$mailbox': typeof AppBoxMailboxRoute
 }
 
 export interface FileRoutesByTo {
@@ -111,7 +111,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutLazyRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
-  '/app': typeof AppIndexRoute
+  '/box/$mailbox': typeof AppBoxMailboxRoute
 }
 
 export interface FileRoutesById {
@@ -120,15 +120,21 @@ export interface FileRoutesById {
   '/about': typeof AboutLazyRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
-  '/app/': typeof AppIndexRoute
+  '/_app/box/$mailbox': typeof AppBoxMailboxRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/auth/login' | '/auth/register' | '/app'
+  fullPaths: '/' | '/about' | '/auth/login' | '/auth/register' | '/box/$mailbox'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/auth/login' | '/auth/register' | '/app'
-  id: '__root__' | '/' | '/about' | '/auth/login' | '/auth/register' | '/app/'
+  to: '/' | '/about' | '/auth/login' | '/auth/register' | '/box/$mailbox'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/auth/login'
+    | '/auth/register'
+    | '/_app/box/$mailbox'
   fileRoutesById: FileRoutesById
 }
 
@@ -137,7 +143,7 @@ export interface RootRouteChildren {
   AboutLazyRoute: typeof AboutLazyRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
-  AppIndexRoute: typeof AppIndexRoute
+  AppBoxMailboxRoute: typeof AppBoxMailboxRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -145,7 +151,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutLazyRoute: AboutLazyRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
-  AppIndexRoute: AppIndexRoute,
+  AppBoxMailboxRoute: AppBoxMailboxRoute,
 }
 
 export const routeTree = rootRoute
@@ -162,7 +168,7 @@ export const routeTree = rootRoute
         "/about",
         "/auth/login",
         "/auth/register",
-        "/app/"
+        "/_app/box/$mailbox"
       ]
     },
     "/": {
@@ -177,8 +183,8 @@ export const routeTree = rootRoute
     "/auth/register": {
       "filePath": "auth/register.tsx"
     },
-    "/app/": {
-      "filePath": "app/index.tsx"
+    "/_app/box/$mailbox": {
+      "filePath": "_app/box/$mailbox.tsx"
     }
   }
 }

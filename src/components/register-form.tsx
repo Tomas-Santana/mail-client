@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   Form,
   FormControl,
@@ -20,8 +20,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { registerSchema, Register } from "@/types/api/register";
+import AuthController from "@/api/controllers/AuthController";
+import { useMutation } from "@tanstack/react-query";
 
 export function RegisterForm() {
+  const navigate = useNavigate();
   const form = useForm<Register>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -29,12 +32,18 @@ export function RegisterForm() {
       password: "",
       confirm_password: "",
       full_name: "",
+    },
+  });
 
+  const register = useMutation({
+    mutationFn: AuthController.register,
+    onSuccess: () => {
+      navigate({ to: "/box/$mailbox", params: { mailbox: "INBOX" } });
     },
   });
 
   const onSubmit = (data: Register) => {
-    console.log(data);
+    register.mutate(data);
   };
 
   return (
