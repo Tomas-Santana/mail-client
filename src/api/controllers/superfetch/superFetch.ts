@@ -51,6 +51,7 @@ export async function superFetch<
     credentials: options.includeCredentials ? "include" : "omit",
   });
 
+
   return handleResponse(response, responseSchema);
 }
 
